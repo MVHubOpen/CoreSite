@@ -1,0 +1,114 @@
+﻿<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-horizontal" id="serverForm">
+                <fieldset>
+                    <!-- Text input-->
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="service">Service Name</label>
+                        <div class="col-md-8">
+                            <input ng-model="serviceId" id="service" name="service" type="text" placeholder="" class="form-control input-md" required="">
+                            <span class="help-block">MvHub Handler Name</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="selectbasic">Select Basic</label>
+                        <div class="col-md-8">
+                            <select ng-model="data.action" class="form-control">
+                                <option>Read</option>
+                                <option>Write</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <form class="form-horizontal">
+                <fieldset>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="username">User Name</label>
+                        <div class="col-md-5">
+                            <input ng-model="username" id="username" name="username" type="text" placeholder="" class="form-control input-md" required="">
+                            <span class="help-block">Database User Name</span>
+                        </div>
+                    </div>
+
+
+                    <!-- Password input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="password">Password </label>
+                        <div class="col-md-5">
+                            <input id="password" name="password" ng-model="password" type="password" placeholder="" class="form-control input-md" required="">
+                            <span class="help-block">Database Password</span>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+    <div class="row well">
+        <div class="col-md-12">
+            <button type="button" class="btn btn-primary" ng-click="changeOptions()"><i class="fa fa-toggle-on"></i> Toggle View</button>
+            <div class="btn-group pull-right" role="group">
+                <button type="button" class="btn btn-danger" ng-click="submitCall()"><i class="fa fa-paper-plane"></i> Submit</button>
+                <button type="button" class="btn btn-danger" ng-click="cloneReply()"><i class="fa fa-clone"></i> Clone</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row well">
+        <div class="col-md-4">
+            <form class="form">
+                <fieldset>
+                    <!-- Textarea -->
+                    <div class="form-group">
+                        <label class="col-md-12 control-label">Key Object</label>
+                        <div class="col-md-12">
+                            <div ng-jsoneditor="" ng-model="data.key" options="options" style="width: 100%; height: 400px;"></div>
+
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+        <div class="col-md-8">
+            <form class="form">
+                <fieldset>
+                    <!-- Textarea -->
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" for="textarea">Item Object</label>
+                        <div class="col-md-12">
+                            <div ng-jsoneditor="" ng-model="data.item" options="options" style="width: 100%; height: 400px;"></div>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+    <div class="row well">
+        <div class="col-md-12">
+            <form class="form">
+                <fieldset>
+                    <!-- Textarea -->
+                    <div class="form-group">
+                        <label class="col-md-12 control-label" for="textarea">Reply Object</label>
+                        <div class="col-md-12">
+                            <div ng-jsoneditor="" ng-model="reply" options="options" style="width: 100%; height: 400px;"></div>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

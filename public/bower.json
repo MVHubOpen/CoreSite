@@ -1,0 +1,21 @@
+{
+  "name": "MVHubCoreSite",
+  "homepage": "https://github.com/MVHubOpen/CoreSite",
+  "authors": [
+    "MvHub Team"
+  ],
+  "description": "MVHub Core Site",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "ng-jsoneditor": "angular-tools/ng-jsoneditor#^1.0.0"
+  }
+}
