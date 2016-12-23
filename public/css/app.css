@@ -1,0 +1,25 @@
+﻿body {
+    padding-top: 65px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+}
+
+.tagLine {
+    font-size: 3.75em;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold;
+}
+
+.ack {
+    font-size: 60%;
+}
+
+.modalBody {
+    height: 60vh;
+    overflow-y: scroll;
+    overflow-x: auto;
+}

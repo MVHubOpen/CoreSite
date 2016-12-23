@@ -18,7 +18,9 @@
                         <div class="col-md-8">
                             <select ng-model="data.action" class="form-control">
                                 <option>Read</option>
-                                <option>Write</option>
+                                <option>Update</option>
+                                <option>Delete</option>
+                                <option>List</option>
                             </select>
                         </div>
                     </div>
@@ -56,10 +58,13 @@
 
     <div class="row well">
         <div class="col-md-12">
-            <button type="button" class="btn btn-primary" ng-click="changeOptions()"><i class="fa fa-toggle-on"></i> Toggle View</button>
+            <div class="btn-group pull-left" role="group">
+                <button type="button" class="btn btn-primary" ng-click="changeOptions()"><i class="fa fa-toggle-on"></i> Toggle View</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-eye"></i> View Request</button>
+            </div>
             <div class="btn-group pull-right" role="group">
-                <button type="button" class="btn btn-danger" ng-click="submitCall()"><i class="fa fa-paper-plane"></i> Submit</button>
                 <button type="button" class="btn btn-danger" ng-click="cloneReply()"><i class="fa fa-clone"></i> Clone</button>
+                <button type="button" class="btn btn-danger" ng-click="submitCall()"><i class="fa fa-paper-plane"></i> Submit</button>
             </div>
         </div>
     </div>
@@ -112,3 +117,25 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="myModal" role="dialog" style="z-index: 999999">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Current Request JSON</h4>
+            </div>
+            <div class="modal-body modalBody">
+                <json-formatter json="data" open="1"></json-formatter>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

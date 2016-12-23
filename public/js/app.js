@@ -1,6 +1,7 @@
 ﻿var app = angular.module('App', [
     'ngRoute',
-    'ng.jsoneditor'
+    'ng.jsoneditor',
+    'jsonFormatter'
 ]);
 
 
@@ -33,19 +34,16 @@ app.controller('TesterController', function ($scope, $http) {
 
     $scope.data = {};
     $scope.data.action = "Read";
-    $scope.data.key = { "customerId": 10 };
+    $scope.data.key = {"mapId": "MVHUB.MAP" };
     $scope.data.item = {};
     $scope.reply = {};
-    $scope.serviceId = "HS.CUSTOMER";
+    $scope.serviceId = "MVHUB.MAP";
     $scope.username = "devweb";
     $scope.password = "devweb";
 
 
     $scope.options = { mode: 'tree' };
 
-    $scope.changeData = function () {
-        $scope.obj.data = { foo: 'bar' };
-    };
     $scope.changeOptions = function () {
         $scope.options.mode = $scope.options.mode == 'tree' ? 'code' : 'tree';
     };
@@ -77,8 +75,8 @@ app.controller('TesterController', function ($scope, $http) {
             });
 
     };
- 
-    $scope.cloneReply = function() {
+
+    $scope.cloneReply = function () {
         if ($scope.reply) {
             if ($scope.reply.key) $scope.data.key = $scope.reply.key;
             if ($scope.reply.item) $scope.data.item = $scope.reply.item;
