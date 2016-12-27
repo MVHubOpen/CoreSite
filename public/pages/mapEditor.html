@@ -1,0 +1,146 @@
+<style>
+   .help-block{
+       font-size: 70%;
+   }
+</style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <form class="form-horizontal" id="serverForm">
+                <fieldset>
+                    <!-- Text input-->
+
+                    <div class="form-group">
+                        <label class="col-md-3 control-label" for="service">Service Name</label>
+                        <div class="col-md-5">
+                            <input ng-model="data.key.mapId" id="service" name="service" type="text" placeholder=""
+                                   class="form-control input-md" required="">
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-danger" ng-click="load()">Load</button>
+                                <button type="button" class="btn btn-danger" ng-click="save()">Save</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+            </form>
+        </div>
+
+        <div class="col-md-6">
+            <form class="form-horizontal">
+                <fieldset>
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="username">User Name</label>
+                        <div class="col-md-5">
+                            <input ng-model="username" id="username" name="username" type="text" placeholder=""
+                                   class="form-control input-md" required="">
+                        </div>
+                        <label class="col-md-4 control-label" for="password">Password </label>
+                        <div class="col-md-5">
+                            <input id="password" name="password" ng-model="password" type="password" placeholder=""
+                                   class="form-control input-md" required="">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Panels -->
+    <div>
+
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a ng-click="setTab(0);" aria-controls="home" role="tab"
+                                                      data-toggle="tab">Main Setup</a></li>
+            <li role="presentation"><a ng-click="setTab(1);" aria-controls="profile" role="tab" data-toggle="tab">Profile</a>
+            </li>
+            <li role="presentation"><a ng-click="setTab(2);" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div ng-show="tabNumber == 0">
+                <h4 class="well">Main Setup of Service</h4>
+                <div class="row">
+
+                    <div class="col-md-6">
+
+                        <fieldset>
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="title">Service Title</label>
+                                <div class="col-md-7">
+                                    <input id="title" ng-model="data.item.title" name="title" type="text" placeholder=""
+                                           class="form-control input-md"
+                                           required="">
+                                    <span class="help-block">Descriptive name of Service </span>
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="databaseFilename">Database
+                                    Filename</label>
+                                <div class="col-md-7">
+                                    <input ng-model="data.item.databaseFilename" id="databaseFilename" name="databaseFilename" type="text"
+                                           placeholder=""
+                                           class="form-control input-md" required="">
+                                    <span class="help-block">The name of file to open to retrieve data</span>
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="sourceCodeFile">Source File</label>
+                                <div class="col-md-7">
+                                    <input ng-model="data.item.sourceCodeFile" id="sourceCodeFile" name="sourceCodeFile" type="text" placeholder=""
+                                           class="form-control input-md" required="">
+                                    <span class="help-block">Source Code file to store generate code</span>
+                                </div>
+                            </div>
+
+                            <!-- Text input-->
+                            <div class="form-group">
+                                <label class="col-md-4 control-label" for="delimiter">Key Delimiter</label>
+                                <div class="col-md-4">
+                                    <input ng-model="data.item.delimiter" id="delimiter" name="delimiter" type="text" placeholder="*"
+                                           class="form-control input-md">
+                                    <span class="help-block">Key Field Delimiter (If need)</span>
+                                </div>
+
+
+                            </div>
+
+
+                        </fieldset>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Associated Tables</h4>
+                        <table>
+                            <tr>
+                                <td>Test</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="tabNumber == 1">
+                <h1>Profile</h1>
+            </div>
+            <div ng-show="tabNumber == 2">
+                <h1>Message</h1>
+            </div>
+            <div ng-show="tabNumber == 3">
+                <h1>Settings</h1>
+            </div>
+
+        </div>
+    </div>
+
+</div>

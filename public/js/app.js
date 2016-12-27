@@ -16,7 +16,10 @@ app.config(function ($routeProvider) {
         templateUrl: 'pages/tester.html',
         controller: 'TesterController'
     });
-
+    $routeProvider.when('/editor', {
+        templateUrl: 'pages/mapEditor.html',
+        controller: 'MapEditorController'
+    });
     $routeProvider.otherwise({
         redirectTo: "/home"
     });
