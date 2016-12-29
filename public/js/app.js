@@ -1,7 +1,8 @@
 ﻿var app = angular.module('App', [
     'ngRoute',
     'ng.jsoneditor',
-    'jsonFormatter'
+    'jsonFormatter',
+    'ngAnimate', 'ngSanitize', 'ui.bootstrap', 'ui.codemirror'
 ]);
 
 
@@ -85,4 +86,41 @@ app.controller('TesterController', function ($scope, $http) {
             if ($scope.reply.item) $scope.data.item = $scope.reply.item;
         }
     }
+});
+
+
+app.filter('lookUp', function() {
+    return function(value, table,key,description) { // filter arguments
+        if (!table || !Array.isArray(table)) throw("[LookUp Filter] Must Pass Array");
+        if (!key) throw("[LookUp Filter] Must Pass Key");
+        if (!description) throw("[LookUp Filter] Must Pass Description");
+
+        var wObj = table.find(function(obj){
+            return obj[key] == value;
+        });
+        if (!wObj) return "";
+        return wObj[description] || "";
+    };
+});
+
+app.filter('mvRecordNotation', function() {
+    return function(field) { // filter arguments
+        var rtn;
+        switch (field.record){
+            case "I":
+                rtn="ID";
+                break;
+            case "W":
+                rtn="WORK.RECORD";
+                break;
+            default:
+                rtn="RECORD";
+        }
+
+        rtn+="<" + field.attr;
+        if (field.vpos) rtn+=","+field.vpos;
+        if (field.spos) rtn+=","+field.spos;
+        rtn+=">";
+        return rtn;
+    };
 });

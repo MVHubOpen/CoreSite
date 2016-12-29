@@ -16,6 +16,7 @@
     "tests"
   ],
   "dependencies": {
-    "ng-jsoneditor": "angular-tools/ng-jsoneditor#^1.0.0"
+    "ng-jsoneditor": "angular-tools/ng-jsoneditor#^1.0.0",
+    "simple-grid": "angular-simple-grid#^0.4.0"
   }
 }

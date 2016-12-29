@@ -1,7 +1,12 @@
 <style>
-   .help-block{
-       font-size: 70%;
-   }
+    .help-block {
+        font-size: 70%;
+    }
+
+    .optionCell {
+        width: 50px;
+
+    }
 </style>
 <div class="container-fluid">
     <div class="row">
@@ -58,11 +63,13 @@
         <ul class="nav nav-tabs" role="tablist">
             <li role="presentation" class="active"><a ng-click="setTab(0);" aria-controls="home" role="tab"
                                                       data-toggle="tab">Main Setup</a></li>
-            <li role="presentation"><a ng-click="setTab(1);" aria-controls="profile" role="tab" data-toggle="tab">Profile</a>
+            <li role="presentation"><a ng-click="setTab(1);" aria-controls="Fields" role="tab"
+                                       data-toggle="tab">Fields</a>
             </li>
             <li role="presentation"><a ng-click="setTab(2);" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
             </li>
         </ul>
+
         <!-- Tab panes -->
         <div class="tab-content">
             <div ng-show="tabNumber == 0">
@@ -88,7 +95,8 @@
                                 <label class="col-md-4 control-label" for="databaseFilename">Database
                                     Filename</label>
                                 <div class="col-md-7">
-                                    <input ng-model="data.item.databaseFilename" id="databaseFilename" name="databaseFilename" type="text"
+                                    <input ng-model="data.item.databaseFilename" id="databaseFilename"
+                                           name="databaseFilename" type="text"
                                            placeholder=""
                                            class="form-control input-md" required="">
                                     <span class="help-block">The name of file to open to retrieve data</span>
@@ -99,7 +107,8 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="sourceCodeFile">Source File</label>
                                 <div class="col-md-7">
-                                    <input ng-model="data.item.sourceCodeFile" id="sourceCodeFile" name="sourceCodeFile" type="text" placeholder=""
+                                    <input ng-model="data.item.sourceCodeFile" id="sourceCodeFile" name="sourceCodeFile"
+                                           type="text" placeholder=""
                                            class="form-control input-md" required="">
                                     <span class="help-block">Source Code file to store generate code</span>
                                 </div>
@@ -109,29 +118,71 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label" for="delimiter">Key Delimiter</label>
                                 <div class="col-md-4">
-                                    <input ng-model="data.item.delimiter" id="delimiter" name="delimiter" type="text" placeholder="*"
+                                    <input ng-model="data.item.delimiter" id="delimiter" name="delimiter" type="text"
+                                           placeholder="*"
                                            class="form-control input-md">
                                     <span class="help-block">Key Field Delimiter (If need)</span>
                                 </div>
-
-
                             </div>
-
-
                         </fieldset>
                     </div>
+
                     <div class="col-md-6">
                         <h4>Associated Tables</h4>
-                        <table>
+                        <table class="table table-bordered">
+                            <thead>
                             <tr>
-                                <td>Test</td>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Control</th>
+                                <th class="optionCell">&nbsp;</th>
                             </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="assoc in data.item.associated">
+                                <td ng-bind="assoc.name"></td>
+                                <td ng-bind="assoc.description"></td>
+                                <td ng-bind="assoc.ctrlAttr"></td>
+                                <td>
+                                    <a ng-click="editAssoc(assoc)"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <a ng-click="deleteAssoc(assoc)"><span class="glyphicon glyphicon-remove"></span></a>
+                                </td>
+                            </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
+
             <div ng-show="tabNumber == 1">
-                <h1>Profile</h1>
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Associated</th>
+                        <th>Name</th>
+                        <th>Label</th>
+                        <th>Length</th>
+                        <th>Record</th>
+                        <th>conversion</th>
+                        <th class="optionCell">&nbsp;</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="fld in data.item.fields">
+                        <td ng-bind="fld.association | lookUp:data.item.associated:'key':'description'"></td>
+                        <td ng-bind="fld.name"></td>
+                        <td ng-bind="fld.label"></td>
+                        <td ng-bind="fld.length"></td>
+                        <td ng-bind="fld|mvRecordNotation"></td>
+                        <td ng-bind="fld.conversion"></td>
+
+                        <td>
+                            <a ng-click="editField(fld)"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a ng-click="deleteField(fld)"><span class="glyphicon glyphicon-remove"></span></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
             <div ng-show="tabNumber == 2">
                 <h1>Message</h1>
@@ -144,3 +195,62 @@
     </div>
 
 </div>
+
+<!-- Assocaited Modal -->
+<script type="text/ng-template" id="AssocaitedModal.html">
+    <form class="form-horizontal">
+    <div class="modal-header">
+        <h3 class="modal-title">
+            Associated Editor</h3>
+    </div>
+    <div class="modal-body linkPanel">
+            <fieldset>
+                <!-- Key input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="key">Key</label>
+                    <div class="col-md-4">
+                        <input ng-model="editObj.key" id="key" name="key" type="text" placeholder="" class="form-control input-md" required="">
+                        <span class="help-block">Key of Association</span>
+                    </div>
+                </div>
+                <!-- Name input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="name">Name</label>
+                    <div class="col-md-4">
+                        <input ng-model="editObj.name" id="name" name="name" type="text" placeholder="" class="form-control input-md" required="">
+                        <span class="help-block">Name for object node</span>
+                    </div>
+                </div>
+                <!-- Description input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="description">Description</label>
+                    <div class="col-md-4">
+                        <input ng-model="editObj.description" id="description" name="description" type="text" placeholder="" class="form-control input-md" required="">
+                        <span class="help-block">Description of the Table</span>
+                    </div>
+                </div>
+
+                <!-- Control Attr. input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="ctrlAttr">Control Attribute</label>
+                    <div class="col-md-4">
+                        <input ng-model="editObj.ctrlAttr" id="ctrlAttr" name="ctrlAttr" type="number" placeholder="" class="form-control input-md" required="">
+                        <span class="help-block">Controlling Attribute <br/>(0 - Grouping)</span>
+                    </div>
+                </div>
+
+            </fieldset>
+    </div>
+    <div class="modal-footer">
+        <!-- Button (Double) -->
+        <div class="form-group">
+            <label class="col-md-8 control-label" for="buttonCancel"></label>
+            <div class="col-md-4">
+                <button ng-click="cancelEdit()" id="buttonCancel" name="buttonCancel" class="btn btn-warning">Cancel</button>
+                <button  ng-click="saveEdit()" id="buttonSave" name="buttonSave" class="btn btn-success">Update</button>
+            </div>
+        </div>
+    </div>
+    </form>
+</script>
+<div id="overlayDiv" class="overlay"></div>
