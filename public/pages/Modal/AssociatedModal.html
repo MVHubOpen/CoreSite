@@ -1,0 +1,65 @@
+<form class="form-horizontal" id="assocForm">
+    <div class="modal-header">
+        <h3 class="modal-title">
+            Associated Editor
+            <span ng-show="editObj.$$isNew_Entry$$" class="pull-right label label-danger">New</span>
+            <span ng-show="editObj.$$dirty$$ && !editObj.$$isNew_Entry$$"
+                  class="pull-right label label-warning">Changed</span>
+        </h3>
+    </div>
+    <div class="modal-body linkPanel">
+        <fieldset>
+            <!-- Key input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="key">Key</label>
+                <div class="col-md-4">
+                    <input ng-model="editObj.key" id="key" name="key" type="text" placeholder=""
+                           class="form-control input-md" required="">
+                    <span class="help-block">Key of Association</span>
+                </div>
+            </div>
+            <!-- Name input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="name">Name</label>
+                <div class="col-md-4">
+                    <input ng-model="editObj.name" id="name" name="name" type="text" placeholder=""
+                           class="form-control input-md" required="">
+                    <span class="help-block">Name for object node</span>
+                </div>
+            </div>
+            <!-- Description input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="description">Description</label>
+                <div class="col-md-4">
+                    <input ng-model="editObj.description" id="description" name="description" type="text"
+                           placeholder="" class="form-control input-md" required="">
+                    <span class="help-block">Description of the Table</span>
+                </div>
+            </div>
+
+            <!-- Control Attr. input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="ctrlAttr">Control Attribute</label>
+                <div class="col-md-4">
+                    <input ng-model="editObj.ctrlAttr" id="ctrlAttr" name="ctrlAttr" type="number" min="1"
+                           placeholder="" class="form-control input-md" required="">
+                    <span class="help-block">Controlling Attribute <br/>(0 - Grouping)</span>
+                </div>
+            </div>
+
+        </fieldset>
+    </div>
+    <div class="modal-footer">
+        <!-- Button (Double) -->
+        <div class="form-group">
+            <label class="col-md-8 control-label" for="buttonCancel"></label>
+            <div class="col-md-4">
+                <button ng-click="cancelEdit()" id="buttonCancel" name="buttonCancel" class="btn btn-warning">
+                    Cancel
+                </button>
+                <button ng-click="saveEdit()" id="buttonSave" name="buttonSave" class="btn btn-success">Update
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

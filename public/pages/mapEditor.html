@@ -24,8 +24,11 @@
 
                         <div class="col-md-4">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-danger" ng-click="load()">Load</button>
-                                <button type="button" class="btn btn-danger" ng-click="save()">Save</button>
+                                <button ng-if="!loaded" ng-disabled="!data.key.mapId" type="button" class="btn btn-primary" ng-click="load()">Load</button>
+                                <button ng-if="!loaded" type="button" class="btn btn-primary" ng-click="help()">Help</button>
+
+                                <button ng-if="loaded" type="button" class="btn btn-warning" ng-click="reset()">Clear</button>
+                                <button ng-if="loaded" type="button" class="btn btn-danger" ng-click="save()">Save</button>
                             </div>
                         </div>
                     </div>
@@ -57,7 +60,7 @@
 
 
     <!-- Panels -->
-    <div>
+    <div ng-if="loaded">
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
@@ -72,8 +75,7 @@
 
         <!-- Tab panes -->
         <div class="tab-content">
-            <div ng-show="tabNumber == 0">
-                <h4 class="well">Main Setup of Service</h4>
+            <div ng-show="tabNumber == 0"><br />
                 <div class="row">
 
                     <div class="col-md-6">
@@ -135,7 +137,9 @@
                                 <th>Name</th>
                                 <th>Description</th>
                                 <th>Control</th>
-                                <th class="optionCell">&nbsp;</th>
+                                <th class="optionCell">
+                                    <a ng-click="editAssoc()"><span class="glyphicon glyphicon-plus"></span></a>
+                                </th>
                             </tr>
                             </thead>
                             <tbody>
@@ -144,9 +148,11 @@
                                 <td ng-bind="assoc.description"></td>
                                 <td ng-bind="assoc.ctrlAttr"></td>
                                 <td>
-                                    <a ng-click="editAssoc(assoc)"><span class="glyphicon glyphicon-edit"></span></a>
-                                    <a ng-click="deleteAssoc(assoc)"><span class="glyphicon glyphicon-remove"></span></a>
+                                    <a ng-click="editAssoc($index)"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <a ng-click="deleteAssoc($index)"><span
+                                            class="glyphicon glyphicon-remove"></span></a>
                                 </td>
+
                             </tr>
                             </tbody>
                         </table>
@@ -155,37 +161,38 @@
             </div>
 
             <div ng-show="tabNumber == 1">
-                <table class="table table-bordered">
+                <table class="table table-bordered ">
                     <thead>
                     <tr>
                         <th>Associated</th>
                         <th>Name</th>
                         <th>Label</th>
                         <th>Length</th>
-                        <th>Record</th>
-                        <th>conversion</th>
-                        <th class="optionCell">&nbsp;</th>
+                        <th>Record Notation</th>
+                        <th>Conversion</th>
+                        <th class="optionCell"><a ng-click="editField()"><span class="glyphicon glyphicon-plus"></span></a>
+                        </th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr ng-repeat="fld in data.item.fields">
+                    <tr ng-repeat="fld in data.item.fields" ng-class="{'warning': fld.$$dirty$$}">
                         <td ng-bind="fld.association | lookUp:data.item.associated:'key':'description'"></td>
                         <td ng-bind="fld.name"></td>
                         <td ng-bind="fld.label"></td>
                         <td ng-bind="fld.length"></td>
-                        <td ng-bind="fld|mvRecordNotation"></td>
+                        <td>{{fld|mvRecordNotation}}</td>
                         <td ng-bind="fld.conversion"></td>
 
                         <td>
-                            <a ng-click="editField(fld)"><span class="glyphicon glyphicon-edit"></span></a>
-                            <a ng-click="deleteField(fld)"><span class="glyphicon glyphicon-remove"></span></a>
+                            <a ng-click="editField($index)"><span class="glyphicon glyphicon-edit"></span></a>
+                            <a ng-click="deleteField($index)"><span class="glyphicon glyphicon-remove"></span></a>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <div ng-show="tabNumber == 2">
-                <h1>Message</h1>
+                <textarea ui-codemirror="Options" ng-model="data.item.writeCode" title="editorBox"></textarea>
             </div>
             <div ng-show="tabNumber == 3">
                 <h1>Settings</h1>
@@ -196,61 +203,7 @@
 
 </div>
 
-<!-- Assocaited Modal -->
-<script type="text/ng-template" id="AssocaitedModal.html">
-    <form class="form-horizontal">
-    <div class="modal-header">
-        <h3 class="modal-title">
-            Associated Editor</h3>
-    </div>
-    <div class="modal-body linkPanel">
-            <fieldset>
-                <!-- Key input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="key">Key</label>
-                    <div class="col-md-4">
-                        <input ng-model="editObj.key" id="key" name="key" type="text" placeholder="" class="form-control input-md" required="">
-                        <span class="help-block">Key of Association</span>
-                    </div>
-                </div>
-                <!-- Name input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="name">Name</label>
-                    <div class="col-md-4">
-                        <input ng-model="editObj.name" id="name" name="name" type="text" placeholder="" class="form-control input-md" required="">
-                        <span class="help-block">Name for object node</span>
-                    </div>
-                </div>
-                <!-- Description input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="description">Description</label>
-                    <div class="col-md-4">
-                        <input ng-model="editObj.description" id="description" name="description" type="text" placeholder="" class="form-control input-md" required="">
-                        <span class="help-block">Description of the Table</span>
-                    </div>
-                </div>
 
-                <!-- Control Attr. input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="ctrlAttr">Control Attribute</label>
-                    <div class="col-md-4">
-                        <input ng-model="editObj.ctrlAttr" id="ctrlAttr" name="ctrlAttr" type="number" placeholder="" class="form-control input-md" required="">
-                        <span class="help-block">Controlling Attribute <br/>(0 - Grouping)</span>
-                    </div>
-                </div>
 
-            </fieldset>
-    </div>
-    <div class="modal-footer">
-        <!-- Button (Double) -->
-        <div class="form-group">
-            <label class="col-md-8 control-label" for="buttonCancel"></label>
-            <div class="col-md-4">
-                <button ng-click="cancelEdit()" id="buttonCancel" name="buttonCancel" class="btn btn-warning">Cancel</button>
-                <button  ng-click="saveEdit()" id="buttonSave" name="buttonSave" class="btn btn-success">Update</button>
-            </div>
-        </div>
-    </div>
-    </form>
-</script>
-<div id="overlayDiv" class="overlay"></div>
+
+
