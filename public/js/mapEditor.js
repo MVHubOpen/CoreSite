@@ -1,7 +1,8 @@
-app.controller('MapEditorController', function ($rootScope,$scope, $http) {
+app.controller('MapEditorController', function ($rootScope, $scope, $http) {
 
     $scope.username = "devweb";
     $scope.password = "devweb";
+    $scope.maxSize = 5;
 
     $scope.recordTypes = [
         {"key": "I", "description": "ID Parts"},
@@ -15,34 +16,16 @@ app.controller('MapEditorController', function ($rootScope,$scope, $http) {
         theme: "neat",
         styleActiveLine: true,
         viewportMargin: 0,
-        extraKeys: {
-            "Alt-C": function () {
-                $scope.compile();
-            },
-            "Alt-L": function () {
-                $scope.openLinked();
-            },
-            "Alt-S": function () {
-                $scope.saveRecord();
-            },
-            "Alt-R": function () {
-                $scope.loadRecord();
-            },
-            "Alt-E": function () {
-                $scope.setDisplayMode('E');
-                $scope.$apply();
-            },
-            "Alt-O": function () {
-                $scope.setDisplayMode('O');
-                $scope.$apply();
-            }
-        }
     };
 
-    $scope.reset = function(){
+    $scope.reset = function () {
         $scope.data = {};
+        $scope.data.key={};
+        $scope.data.key.mapId="MVHUB.MAP";
         $scope.tabNumber = 0;
         $scope.loaded = false;
+        $scope.assocCurrentPage=1;
+        $scope.fldCurrentPage = 1;
     };
     $scope.reset();
 
@@ -74,7 +57,7 @@ app.controller('MapEditorController', function ($rootScope,$scope, $http) {
 
     $scope.editAssoc = function (fieldIndex) {
 
-        $rootScope.editModal($scope.data.item.associated[fieldIndex], '/pages/Modal/AssociatedModal.html', 'EditAssocController',"sm")
+        $rootScope.editModal($scope.data.item.associated[fieldIndex], '/pages/Modal/AssociatedModal.html', 'EditAssocController')
             .then(function (obj) {
                 $scope.data.item.associated[fieldIndex] = obj;
                 sortTables();
@@ -94,7 +77,6 @@ app.controller('MapEditorController', function ($rootScope,$scope, $http) {
 
     $scope.load = function () {
         $scope.loaded = false;
-        $rootScope.overlayForm(00);
         $scope.data.action = "Read";
 
         var headers = 'Basic ' + window.btoa($scope.username + ":" + $scope.password);
@@ -111,11 +93,44 @@ app.controller('MapEditorController', function ($rootScope,$scope, $http) {
 
                 $scope.data = resp.data;
                 sortTables();
-                $rootScope.overlayForm(0);
-                $scope.loaded =true;
+                $scope.loaded = true;
             },
             function () {
-                $rootScope.overlayForm(0);
+                def.reject([
+                    {
+                        error: "Connection Error",
+                        errorCode: 500
+                    }
+                ]);
+            });
+
+    };
+
+    $scope.save = function () {
+        $scope.loaded = false;
+        $scope.data.action = "Update";
+        sortTables();
+
+        var headers = 'Basic ' + window.btoa($scope.username + ":" + $scope.password);
+        headers['Content-Type'] = "application/json";
+        var pData = angular.toJson($scope.data);
+        var url = "/Service/MVHUB.MAP";
+        $http({
+            method: "POST",
+            url: url,
+            headers: headers,
+            withCredentials: true,
+            data: pData
+        }).then(function (resp) {
+                if (!resp.data.error) {
+
+                } else {
+                    $scope.data = resp.data;
+                    sortTables();
+                    $scope.loaded = true;
+                }
+            },
+            function () {
                 def.reject([
                     {
                         error: "Connection Error",
@@ -174,18 +189,18 @@ app.controller('EditFieldController', function ($rootScope, $scope, $modalInstan
     var oEditObj = JSON.parse(JSON.stringify(editObj));
     $scope.$watch('editObj', function (updated, old) {
 
-        if (updated.association != old.association){
+        if (updated.association != old.association) {
             if (updated.association === "###KEY###") {
                 $scope.editObj.record = "I";
             } else {
-                if (updated.record = "I") $scope.editObj.record ="B";
+                if (updated.record = "I") $scope.editObj.record = "B";
             }
         } else {
             if (updated.record === "I") $scope.editObj.association = "###KEY###";
         }
         if (updated.record === "I") {
-            $scope.editObj.vpos=0;
-            $scope.editObj.spos=0;
+            $scope.editObj.vpos = 0;
+            $scope.editObj.spos = 0;
         }
         $scope.editObj.$$dirty$$ = !isEquivalent(updated, oEditObj);
     }, true);

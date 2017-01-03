@@ -19,16 +19,21 @@
                         <label class="col-md-3 control-label" for="service">Service Name</label>
                         <div class="col-md-5">
                             <input ng-model="data.key.mapId" id="service" name="service" type="text" placeholder=""
-                                   class="form-control input-md" required="">
+                                   class="form-control input-md" required="" style="text-transform:uppercase">
                         </div>
 
                         <div class="col-md-4">
                             <div class="btn-group">
-                                <button ng-if="!loaded" ng-disabled="!data.key.mapId" type="button" class="btn btn-primary" ng-click="load()">Load</button>
-                                <button ng-if="!loaded" type="button" class="btn btn-primary" ng-click="help()">Help</button>
+                                <button ng-if="!loaded" ng-disabled="!data.key.mapId" type="button"
+                                        class="btn btn-primary" ng-click="load()">Load
+                                </button>
+                                <button ng-if="!loaded" type="button" class="btn btn-primary" ng-click="help()">Help
+                                </button>
 
-                                <button ng-if="loaded" type="button" class="btn btn-warning" ng-click="reset()">Clear</button>
-                                <button ng-if="loaded" type="button" class="btn btn-danger" ng-click="save()">Save</button>
+                                <button ng-if="loaded" type="button" class="btn btn-warning" ng-click="reset()">Clear
+                                </button>
+                                <button ng-if="loaded" type="button" class="btn btn-danger" ng-click="save()">Save
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -64,18 +69,14 @@
 
         <!-- Nav tabs -->
         <ul class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active"><a ng-click="setTab(0);" aria-controls="home" role="tab"
-                                                      data-toggle="tab">Main Setup</a></li>
-            <li role="presentation"><a ng-click="setTab(1);" aria-controls="Fields" role="tab"
-                                       data-toggle="tab">Fields</a>
-            </li>
-            <li role="presentation"><a ng-click="setTab(2);" aria-controls="messages" role="tab" data-toggle="tab">Messages</a>
-            </li>
+            <li role="presentation" class="active"><a ng-click="setTab(0);" aria-controls="home" role="tab" data-toggle="tab">Main&nbsp;Setup</a></li>
+            <li role="presentation"><a ng-click="setTab(1);" aria-controls="Fields" role="tab" data-toggle="tab">Fields</a></li>
+            <li role="presentation"><a ng-click="setTab(2);" aria-controls="messages" role="tab" data-toggle="tab">Record&nbsp;Processing</a></li>
         </ul>
 
         <!-- Tab panes -->
         <div class="tab-content">
-            <div ng-show="tabNumber == 0"><br />
+            <div ng-show="tabNumber == 0"><br/>
                 <div class="row">
 
                     <div class="col-md-6">
@@ -130,73 +131,136 @@
                     </div>
 
                     <div class="col-md-6">
-                        <h4>Associated Tables</h4>
-                        <table class="table table-bordered">
-                            <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Description</th>
-                                <th>Control</th>
-                                <th class="optionCell">
-                                    <a ng-click="editAssoc()"><span class="glyphicon glyphicon-plus"></span></a>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr ng-repeat="assoc in data.item.associated">
-                                <td ng-bind="assoc.name"></td>
-                                <td ng-bind="assoc.description"></td>
-                                <td ng-bind="assoc.ctrlAttr"></td>
-                                <td>
-                                    <a ng-click="editAssoc($index)"><span class="glyphicon glyphicon-edit"></span></a>
-                                    <a ng-click="deleteAssoc($index)"><span
-                                            class="glyphicon glyphicon-remove"></span></a>
-                                </td>
+                        <div class="panel panel-default panel-table">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col col-xs-6">
+                                        <h3 class="panel-title">Associated Tables</h3>
+                                    </div>
+                                    <div class="col col-xs-6 text-right">
+                                        <button type="button" class="btn btn-sm btn-primary btn-create">Create New</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Description</th>
+                                        <th>Control</th>
+                                        <th class="optionCell">
+                                            <a ng-click="editAssoc()"><span class="glyphicon glyphicon-plus"></span></a>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr ng-repeat="assoc in data.item.associated">
+                                        <td ng-bind="assoc.name"></td>
+                                        <td ng-bind="assoc.description"></td>
+                                        <td ng-bind="assoc.ctrlAttr"></td>
+                                        <td>
+                                            <a ng-click="editAssoc($index)"><span class="glyphicon glyphicon-edit"></span></a>
+                                            <a ng-click="deleteAssoc($index)"><span
+                                                    class="glyphicon glyphicon-remove"></span></a>
+                                        </td>
 
-                            </tr>
-                            </tbody>
-                        </table>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="panel-footer">
+                                <div class="row">
+                                    <ul class="pagination pull-right">
+                                        <li><a href="#">&laquo;</a></li>
+                                        <li><a href="#">1</a></li>
+                                        <li><a href="#">2</a></li>
+                                        <li><a href="#">3</a></li>
+                                        <li><a href="#">4</a></li>
+                                        <li><a href="#">5</a></li>
+                                        <li><a href="#">&raquo;</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div ng-show="tabNumber == 1">
-                <table class="table table-bordered ">
-                    <thead>
-                    <tr>
-                        <th>Associated</th>
-                        <th>Name</th>
-                        <th>Label</th>
-                        <th>Length</th>
-                        <th>Record Notation</th>
-                        <th>Conversion</th>
-                        <th class="optionCell"><a ng-click="editField()"><span class="glyphicon glyphicon-plus"></span></a>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr ng-repeat="fld in data.item.fields" ng-class="{'warning': fld.$$dirty$$}">
-                        <td ng-bind="fld.association | lookUp:data.item.associated:'key':'description'"></td>
-                        <td ng-bind="fld.name"></td>
-                        <td ng-bind="fld.label"></td>
-                        <td ng-bind="fld.length"></td>
-                        <td>{{fld|mvRecordNotation}}</td>
-                        <td ng-bind="fld.conversion"></td>
+                <div class="panel panel-default panel-table">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <div class="col col-xs-6">
+                                <h3 class="panel-title">Associated Tables</h3>
+                            </div>
+                            <div class="col col-xs-6 text-right">
+                                <button type="button" class="btn btn-sm btn-primary btn-create">Create New</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <table class="table table-bordered ">
+                            <thead>
+                            <tr>
+                                <th>Associated</th>
+                                <th>Name</th>
+                                <th>Label</th>
+                                <th>Length</th>
+                                <th>Record Notation</th>
+                                <th>Conversion</th>
+                                <th class="optionCell"><a ng-click="editField()"><span class="glyphicon glyphicon-plus"></span></a>
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="fld in data.item.fields" ng-class="{'warning': fld.$$dirty$$}">
+                                <td ng-bind="fld.association | lookUp:data.item.associated:'key':'description'"></td>
+                                <td ng-bind="fld.name"></td>
+                                <td ng-bind="fld.label"></td>
+                                <td ng-bind="fld.length"></td>
+                                <td>{{fld|mvRecordNotation}}</td>
+                                <td ng-bind="fld.conversion"></td>
 
-                        <td>
-                            <a ng-click="editField($index)"><span class="glyphicon glyphicon-edit"></span></a>
-                            <a ng-click="deleteField($index)"><span class="glyphicon glyphicon-remove"></span></a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+                                <td>
+                                    <a ng-click="editField($index)"><span class="glyphicon glyphicon-edit"></span></a>
+                                    <a ng-click="deleteField($index)"><span class="glyphicon glyphicon-remove"></span></a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer">
+                        <div class="row">
+                            <ul class="pagination pull-right">
+                                <li><a href="#">&laquo;</a></li>
+                                <li><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">&raquo;</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
             <div ng-show="tabNumber == 2">
-                <textarea ui-codemirror="Options" ng-model="data.item.writeCode" title="editorBox"></textarea>
+                <div class="row">
+                    <div class="col-mo-8">
+                        <h5>Create Code</h5>
+                        <textarea ui-codemirror="Options" ng-model="data.item.createCode" title="editorBox"></textarea>
+                        <h5>Read Code</h5>
+                        <textarea ui-codemirror="Options" ng-model="data.item.readCode" title="editorBox"></textarea>
+                        <h5>Write Code</h5>
+                        <textarea ui-codemirror="Options" ng-model="data.item.writeCode" title="editorBox"></textarea>
+                    </div>
+                    <div class="col-md-4"><h5>Legend</h5></div>
+                </div>
             </div>
-            <div ng-show="tabNumber == 3">
-                <h1>Settings</h1>
-            </div>
+
 
         </div>
     </div>

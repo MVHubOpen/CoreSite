@@ -178,6 +178,7 @@ app.filter('mvRecordNotation', function () {
         rtn += ">";
          rtn += " (" + field.type;
          if (field.readonly)rtn += ",RO"
+        if (field.query)rtn += ",Q"
              rtn += ")";
         return rtn;
     };
