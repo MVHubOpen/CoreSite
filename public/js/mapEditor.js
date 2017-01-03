@@ -107,13 +107,16 @@ app.controller('MapEditorController', function ($rootScope, $scope, $http) {
     };
 
     $scope.save = function () {
-        $scope.loaded = false;
-        $scope.data.action = "Update";
         sortTables();
+        var data = {};
+        data.action = "Update";
+        data.key = JSON.parse(angular.toJson($scope.data.key));
+        data.item =  JSON.parse(angular.toJson($scope.data.item));
+
 
         var headers = 'Basic ' + window.btoa($scope.username + ":" + $scope.password);
         headers['Content-Type'] = "application/json";
-        var pData = angular.toJson($scope.data);
+        var pData = JSON.stringify(data);
         var url = "/Service/MVHUB.MAP";
         $http({
             method: "POST",
@@ -122,12 +125,10 @@ app.controller('MapEditorController', function ($rootScope, $scope, $http) {
             withCredentials: true,
             data: pData
         }).then(function (resp) {
-                if (!resp.data.error) {
-
+                if (!resp.data.errors) {
+                    $scope.reset();
                 } else {
-                    $scope.data = resp.data;
-                    sortTables();
-                    $scope.loaded = true;
+                    alert("Error Count : " +resp.data.errors.length);
                 }
             },
             function () {
