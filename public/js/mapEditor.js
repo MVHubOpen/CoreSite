@@ -1,8 +1,9 @@
-app.controller('MapEditorController', function ($rootScope, $scope, $http) {
+app.controller('MapEditorController', function ($rootScope, $scope, $http, mvHub) {
 
     $scope.username = "devweb";
     $scope.password = "devweb";
     $scope.maxSize = 5;
+    $scope.fieldPager = {};
 
     $scope.recordTypes = [
         {"key": "I", "description": "ID Parts"},
@@ -57,7 +58,7 @@ app.controller('MapEditorController', function ($rootScope, $scope, $http) {
 
     $scope.editAssoc = function (fieldIndex) {
 
-        $rootScope.editModal($scope.data.item.associated[fieldIndex], '/pages/Modal/AssociatedModal.html', 'EditAssocController')
+        mvHub.editModal($scope.data.item.associated[fieldIndex], '/pages/Modal/AssociatedModal.html', 'EditAssocController')
             .then(function (obj) {
                 $scope.data.item.associated[fieldIndex] = obj;
                 sortTables();
@@ -66,7 +67,7 @@ app.controller('MapEditorController', function ($rootScope, $scope, $http) {
 
     $scope.editField = function (fieldIndex) {
 
-        $rootScope.editModal($scope.data.item.fields[fieldIndex], '/pages/Modal/FieldModal.html', 'EditFieldController', $scope.data.item)
+        mvHub.editModal($scope.data.item.fields[fieldIndex], '/pages/Modal/FieldModal.html', 'EditFieldController', $scope.data.item)
             .then(function (obj) {
                 $scope.data.item.fields[fieldIndex] = obj;
                 sortTables();
@@ -94,6 +95,8 @@ app.controller('MapEditorController', function ($rootScope, $scope, $http) {
                 $scope.data = resp.data;
                 sortTables();
                 $scope.loaded = true;
+                $scope.fieldPager = mvHub.getPager($scope.data.item.fields, 10);
+                $scope.assocPager = mvHub.getPager($scope.data.item.associated, 5);
             },
             function () {
                 def.reject([
