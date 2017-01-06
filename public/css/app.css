@@ -1,6 +1,5 @@
 ﻿body {
     padding-top: 65px;
-    overflow-y: scroll;
 }
 
 .ovh {
@@ -21,6 +20,10 @@ footer {
 
 .ack {
     font-size: 60%;
+}
+
+.nowrap {
+    white-space:nowrap;
 }
 
 .modalBody {

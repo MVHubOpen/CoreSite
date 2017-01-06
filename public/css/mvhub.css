@@ -1,0 +1,10 @@
+.MCL{
+    text-transform: lowercase;
+}
+
+.MCT{
+    text-transform: capitalize;
+}
+.MCU{
+    text-transform:uppercase;
+}

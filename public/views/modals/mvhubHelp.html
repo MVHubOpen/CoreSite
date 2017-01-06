@@ -1,0 +1,38 @@
+<form class="form-horizontal" id="fieldForm">
+    <div class="modal-header">
+        <h3 class="modal-title" ng-bind="title"></h3>
+        <div class="col col-xs-7 text-right">
+            <ul ng-show="listPager.maxPage > 1" class="pagination pagination-sm pull-right" style="padding: 0; margin:0;">
+                <li><a ng-click="listPager.firstPage()"><span class="glyphicon glyphicon-step-backward" /></a></li>
+                <li><a ng-click="listPager.prevPage()"><span class="glyphicon glyphicon-chevron-left" /></a></li>
+                <li ng-repeat="page in listPager.pages()"><a ng-click="listPager.setPage(page)"
+                                                              ng-bind="page">X</a></li>
+                <li><a ng-click="listPager.nextPage()"><span class="glyphicon glyphicon-chevron-right" /></a></li>
+                <li><a ng-click="listPager.lastPage()"><span class="glyphicon glyphicon-step-forward" /></a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="modal-body linkPanel">
+        <table class="table table-hover table-bordered">
+            <thead>
+            <tr>
+                <th ng-repeat="column in columns" class="text-center">{{column.label}}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="line in listPager.rows()" ng-click="selected(line.key)">
+                <td class="nowrap" ng-repeat="column in columns">{{line.item[column.name]}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <!-- Button (Double) -->
+        <div class="form-group">
+            <div class="col-md-8" for="buttonCancel"><span class="pull-left">Total Number of Items: {{lineCount}}</span></div>
+            <div class="col-md-4">
+                <button ng-click="cancel()" id="buttonCancel" class="btn btn-warning">Cancel</button>
+            </div>
+        </div>
+    </div>
+</form>

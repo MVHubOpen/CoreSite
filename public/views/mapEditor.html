@@ -19,8 +19,9 @@
                     <div class="form-group">
                         <label class="col-md-3 control-label" for="service">Service Name</label>
                         <div class="col-md-5">
-                            <input ng-model="data.key.mapId" id="service" name="service" type="text" placeholder=""
-                                   class="form-control input-md" required="" style="text-transform:uppercase">
+                            <input  ng-model="data.key.mapId" ng-dblclick="help()"
+                                    id="service" name="service" type="text" placeholder=""
+                                   class="form-control input-md MCU" required="">
                         </div>
 
                         <div class="col-md-4">
@@ -142,11 +143,13 @@
                                         <h3 class="panel-title">Associated Tables</h3>
                                     </div>
                                     <div class="col col-xs-7 text-right">
-                                        <ul class="pagination pagination-sm pull-right" style="padding: 0; margin:0;">
-                                            <li><a ng-click="assocPager.firstPage()">&laquo;</a></li>
+                                        <ul ng-show="assocPager.maxPage > 1" class="pagination pagination-sm pull-right" style="padding: 0; margin:0;">
+                                            <li><a ng-click="assocPager.firstPage()"><span class="glyphicon glyphicon-step-backward" /></a></li>
+                                            <li><a ng-click="assocPager.prevPage()"><span class="glyphicon glyphicon-chevron-left" /></a></li>
                                             <li ng-repeat="page in assocPager.pages()"><a ng-click="assocPager.setPage(page)"
                                                                                           ng-bind="page">X</a></li>
-                                            <li><a ng-click="assocPager.lastPage()">&raquo;</a></li>
+                                            <li><a ng-click="assocPager.nextPage()"><span class="glyphicon glyphicon-chevron-right" /></a></li>
+                                            <li><a ng-click="assocPager.lastPage()"><span class="glyphicon glyphicon-step-forward" /></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -164,7 +167,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr ng-repeat="assoc in assocPager.rows()">
+                                    <tr class="nowrap" ng-repeat="assoc in assocPager.rows()">
                                         <td ng-bind="assoc.name"></td>
                                         <td ng-bind="assoc.description"></td>
                                         <td ng-bind="assoc.ctrlAttr"></td>
@@ -193,11 +196,13 @@
                             </div>
 
                             <div class="col col-xs-9 text-right">
-                                    <ul class="pagination pagination-sm pull-right" style="padding: 0; margin:0;">
-                                        <li><a ng-click="fieldPager.firstPage()">&laquo;</a></li>
+                                    <ul ng-show="fieldPager.maxPage > 1" class="pagination pagination-sm pull-right" style="padding: 0; margin:0;">
+                                        <li><a ng-click="fieldPager.firstPage()"><span class="glyphicon glyphicon-step-backward" /></a></li>
+                                        <li><a ng-click="fieldPager.prevPage()"><span class="glyphicon glyphicon-chevron-left" /></a></li>
                                         <li ng-repeat="page in fieldPager.pages()"><a ng-click="fieldPager.setPage(page)"
                                                                                       ng-bind="page">X</a></li>
-                                        <li><a ng-click="fieldPager.lastPage()">&raquo;</a></li>
+                                        <li><a ng-click="fieldPager.nextPage()"><span class="glyphicon glyphicon-chevron-right" /></a></li>
+                                        <li><a ng-click="fieldPager.lastPage()"><span class="glyphicon glyphicon-step-forward" /></a></li>
                                     </ul>
                             </div>
                         </div>
@@ -218,7 +223,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr ng-repeat="fld in fieldPager.rows()" ng-class="{'warning': fld.$$dirty$$}">
+                            <tr class="nowrap" ng-repeat="fld in fieldPager.rows()" ng-class="{'warning': fld.$$dirty$$}">
                                 <td ng-bind="fld.association | lookUp:data.item.associated:'key':'description'"></td>
                                 <td ng-bind="fld.name"></td>
                                 <td ng-bind="fld.label"></td>

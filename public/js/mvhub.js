@@ -32,13 +32,18 @@ mvHubServices.factory('mvHub', function ($http, $q,$modal,$sessionStorage){
         pager.pageSize = pageSize;
         pager.pageNumber=1;
 
-        pager.maxPage=function(){
-            if (pager.data.length === 0) return 0;
-            return Math.round(pager.data.length/pager.pageSize);
-        };
+        Object.defineProperty(pager, "maxPage",{
+            get: function(){
+                if (pager.data.length === 0) return 0;
+                return Math.round(pager.data.length/pager.pageSize) || 1;
+            },
+            enumerable: true,
+            configurable: true
+        });
+            
         pager.setPage = function(pageNumber){
            if(pageNumber<1) pageNumber=1;
-           if(pageNumber > pager.maxPage()) pageNumber=pager.maxPage();
+           if(pageNumber > pager.maxPage) pageNumber=pager.maxPage;
             pager.pageNumber=pageNumber;
         };
 
@@ -52,10 +57,10 @@ mvHubServices.factory('mvHub', function ($http, $q,$modal,$sessionStorage){
             pager.setPage(1);
         };
         pager.lastPage=function(){
-            pager.setPage(pager.maxPage());
+            pager.setPage(pager.maxPage);
         };
         pager.pages = function(){
-            var pCnt = pager.maxPage();
+            var pCnt = pager.maxPage;
             var pages = [];
             for (i = 1; i <= pCnt; i++) {
                pages.push(i);
@@ -77,13 +82,33 @@ mvHubServices.factory('mvHub', function ($http, $q,$modal,$sessionStorage){
         };
         return pager;
     };
+    mvhub.helpModal = function (queryObj, size) {
+        var deferred = $q.defer();
+        var modalInstance = $modal.open({
+            templateUrl: "/views/modals/mvhubHelp.html",
+            controller: 'MvHubHelpController',
+            size: size || 'md',
+            resolve: {
+                queryObj: function () {
+                    return queryObj;
+                }
+            }
+        });
+        modalInstance.result.then(function (returnItem) {
+            deferred.resolve(returnItem);
+        }, function () {
+            deferred.reject('Cancelled');
+        });
+
+        return deferred.promise;
+    };
 
     mvhub.editModal = function (editobj, template, controller, parentObj, size) {
         var deferred = $q.defer();
 
         if (!editobj) {
             editobj = {};
-            editobj.$$isNew_Entry$$ = true;
+            editobj.$$isNew_Entry = true;
         }
 
         var modalInstance = $modal.open({
@@ -108,6 +133,24 @@ mvHubServices.factory('mvHub', function ($http, $q,$modal,$sessionStorage){
     };
 
     return mvhub;
+});
+
+
+mvHubServices.controller('MvHubHelpController', function ($scope, $modalInstance,mvHub, queryObj) {
+
+    $scope.columns = queryObj.columns;
+    $scope.rows = queryObj.rows;
+    $scope.title = queryObj.title;
+    $scope.lineCount = queryObj.count;
+    $scope.listPager = mvHub.getPager($scope.rows)
+
+    $scope.cancel = function () {
+        $modalInstance.dismiss('cancel');
+
+    };
+    $scope.selected = function (keyObj) {
+        $modalInstance.close(keyObj);
+    };
 });
 
 mvHubServices.filter('mvRecordNotation', function () {

@@ -9,16 +9,16 @@
 app.config(function ($routeProvider) {
 
     $routeProvider.when('/home', {
-        templateUrl: 'pages/home.html',
+        templateUrl: '../views/home.html',
         controller: 'HomeController'
     });
 
     $routeProvider.when('/tester', {
-        templateUrl: 'pages/tester.html',
+        templateUrl: '../views/tester.html',
         controller: 'TesterController'
     });
     $routeProvider.when('/editor', {
-        templateUrl: 'pages/mapEditor.html',
+        templateUrl: '../views/mapEditor.html',
         controller: 'MapEditorController'
     });
     $routeProvider.otherwise({

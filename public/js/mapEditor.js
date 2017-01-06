@@ -21,11 +21,11 @@ app.controller('MapEditorController', function ($rootScope, $scope, $http, mvHub
 
     $scope.reset = function () {
         $scope.data = {};
-        $scope.data.key={};
-        $scope.data.key.mapId="MVHUB.MAP";
+        $scope.data.key = {};
+        $scope.data.key.mapId = "";
         $scope.tabNumber = 0;
         $scope.loaded = false;
-        $scope.assocCurrentPage=1;
+        $scope.assocCurrentPage = 1;
         $scope.fldCurrentPage = 1;
     };
     $scope.reset();
@@ -58,27 +58,64 @@ app.controller('MapEditorController', function ($rootScope, $scope, $http, mvHub
 
     $scope.editAssoc = function (fieldIndex) {
 
-        mvHub.editModal($scope.data.item.associated[fieldIndex], '/pages/Modal/AssociatedModal.html', 'EditAssocController')
+        mvHub.editModal($scope.data.item.associated[fieldIndex], '/views/modals/AssociatedModal.html', 'EditAssocController')
             .then(function (obj) {
-                $scope.data.item.associated[fieldIndex] = obj;
+                if (obj.$$isNew_Entry){
+                    delete obj.$$isNew_Entry;
+                    $scope.data.item.associated.push(obj);
+                } else {
+                    $scope.data.item.associated[fieldIndex] = obj;
+                }
                 sortTables();
             });
     };
 
     $scope.editField = function (fieldIndex) {
 
-        mvHub.editModal($scope.data.item.fields[fieldIndex], '/pages/Modal/FieldModal.html', 'EditFieldController', $scope.data.item)
+        mvHub.editModal($scope.data.item.fields[fieldIndex], '/views/modals/FieldModal.html', 'EditFieldController', $scope.data.item)
             .then(function (obj) {
-                $scope.data.item.fields[fieldIndex] = obj;
+                if (obj.$$isNew_Entry){
+                    delete obj.$$isNew_Entry;
+                    $scope.data.item.fields.push(obj);
+                } else {
+                    $scope.data.item.fields[fieldIndex] = obj;
+                }
                 sortTables();
 
             });
     };
 
+    $scope.help = function () {
+        $scope.data = {};
+        $scope.data.action = "Query";
 
-    $scope.load = function () {
+        var headers = 'Basic ' + window.btoa($scope.username + ":" + $scope.password);
+        headers['Content-Type'] = "application/json";
+        var pData = angular.toJson($scope.data);
+        var url = "/Service/MVHUB.MAP";
+        $http({
+            method: "POST",
+            url: url,
+            headers: headers,
+            withCredentials: true,
+            data: pData
+        }).then(function (resp) {
+
+                mvHub.helpModal(resp.data, 'lg').then(function (keyObj) {
+                    $scope.data = {};
+                    $scope.data.key = keyObj;
+                    $scope.load();
+                });
+            },
+            function () {
+                alert("No Help Available");
+            });
+    };
+
+
+    $scope.load = function (action) {
         $scope.loaded = false;
-        $scope.data.action = "Read";
+        $scope.data.action = action || "Read";
 
         var headers = 'Basic ' + window.btoa($scope.username + ":" + $scope.password);
         headers['Content-Type'] = "application/json";
@@ -114,7 +151,7 @@ app.controller('MapEditorController', function ($rootScope, $scope, $http, mvHub
         var data = {};
         data.action = "Update";
         data.key = JSON.parse(angular.toJson($scope.data.key));
-        data.item =  JSON.parse(angular.toJson($scope.data.item));
+        data.item = JSON.parse(angular.toJson($scope.data.item));
 
 
         var headers = 'Basic ' + window.btoa($scope.username + ":" + $scope.password);
@@ -131,7 +168,7 @@ app.controller('MapEditorController', function ($rootScope, $scope, $http, mvHub
                 if (!resp.data.errors) {
                     $scope.reset();
                 } else {
-                    alert("Error Count : " +resp.data.errors.length);
+                    alert("Error Count : " + resp.data.errors.length);
                 }
             },
             function () {
